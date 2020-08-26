@@ -32,11 +32,12 @@
 
   function addTodo(event) {
     if (event.key === 'Enter') {
-      todos = [...todos, {
+      const todo = {
         id: uid++,
         completed: false,
         title: newTodoTitle
-      }];
+      }
+      todos = [...todos, todo ];
 
       newTodoTitle = '';
 
