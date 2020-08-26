@@ -14,4 +14,26 @@
 
 </script>
 
+<style>
+  button {
+    font-size: 14px;
+    background-color: white;
+    appearance: none;
+  }
+
+  button:hover {
+    background: lightseagreen;
+    color: white;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  .active {
+    background: lightskyblue;
+
+  }
+</style>
+
 <button on:click={() => updateFilter()} class:active={filterOption === currentFilter}>{filterOption}</button>
