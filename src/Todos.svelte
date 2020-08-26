@@ -1,24 +1,30 @@
 <script>
   import TodoItem from './TodoItem.svelte'
-
+  import FilterButton from './FilterButton.svelte'
 
   let newTodoTitle = '';
   let currentFilter = 'all';
-  let nextId = 4;
+  let uid = 1;
+
+  let filterOptions = [
+    'all',
+    'active',
+    'completed'
+  ]
 
   let todos = [
     {
-      id: 1,
+      id: uid++,
       title: 'first todo',
       completed: false
     },
     {
-      id: 2,
+      id: uid++,
       title: 'second todo',
       completed: false
     },
     {
-      id: 3,
+      id: uid++,
       title: 'third todo',
       completed: false
     },
@@ -27,12 +33,11 @@
   function addTodo(event) {
     if (event.key === 'Enter') {
       todos = [...todos, {
-        id: nextId,
+        id: uid++,
         completed: false,
         title: newTodoTitle
       }];
 
-      nextId = nextId + 1;
       newTodoTitle = '';
 
     }
@@ -58,6 +63,10 @@
 
   function handleDeleteTodo(event) {
     todos = todos.filter(todo => todo.id !== event.detail.id);
+  }
+
+  function handleUpdateFilter(event) {
+    updateFilter(event.detail.filterOption)
   }
 
   function handleToggleComplete(event) {
@@ -107,6 +116,7 @@
 
   button:hover {
     background: lightseagreen;
+    color: white;
   }
 
   button:focus {
@@ -114,13 +124,14 @@
   }
 
   .active {
-    background: lightseagreen;
+    background: lightskyblue;
+
   }
 
 </style>
 
 <div class='container'>
-  <h2>Svelte Todo App</h2>
+  <h2>Todos</h2>
   <input on:keydown={addTodo} bind:value={newTodoTitle} type="text" class="todo-input" placeholder="insert todo item ..."/>
 
   {#each filteredTodos as todo}
@@ -141,9 +152,9 @@
 
   <div class="inner-container">
     <div>
-      <button on:click={() => updateFilter('all')} class:active="{currentFilter === 'all'}">All</button>
-      <button on:click={() => updateFilter('active')} class:active="{currentFilter === 'active'}">Active</button>
-      <button on:click={() => updateFilter('completed')} class:active="{currentFilter === 'completed'}">Completed</button>
+      {#each filterOptions as filterOption}
+        <FilterButton {filterOption} {currentFilter} on:updateFilter={handleUpdateFilter} />
+      {/each}
     </div>
     <div>
       <button on:click={clearCompleted}>Clear Completed</button>
